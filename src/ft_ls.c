@@ -6,7 +6,7 @@
 /*   By: cbagdon <cbagdon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/05 20:41:43 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/03/08 16:51:58 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/03/08 22:55:12 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,6 @@ void			get_files(char *path)
 }
 
 */
-
-//FUCKING USE MALLOC LATER. YOU DIPSHIT.
 
 void				get_files(char *path)
 {
