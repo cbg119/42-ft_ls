@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_ls.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cbagdon <cbagdon@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/05 17:46:57 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/03/08 16:52:16 by cbagdon          ###   ########.fr       */
+/*   Created: 2019/03/10 12:37:14 by cbagdon           #+#    #+#             */
+/*   Updated: 2019/03/11 18:55:11 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,18 +32,11 @@
 
 typedef	struct			s_file
 {
-	struct dirent		*entry;
-	struct stat			*stat_info;
+	char				*path;
+	struct dirent		*f_entry;
+	struct stat			*f_info;
+	struct s_file		*next;
 }						t_file;
-
-typedef struct			s_entries
-{
-	t_file				*file;
-	struct s_entries	*next;
-}						t_entries;
-
-void					list_add(t_entries **head, t_entries *new);
-t_entries				*new_list(t_file *file);
 
 /*
 **	**********
@@ -53,7 +46,10 @@ t_entries				*new_list(t_file *file);
 **  PROTOTYPES
 */
 
-
+t_file		*new_file(char *path);
+void		del_files(t_file **head);
+void		add_file(t_file **head, t_file *file);
+t_file		*bubble_list(t_file *head);
 
 /*
 **  **********

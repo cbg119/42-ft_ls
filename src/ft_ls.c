@@ -3,112 +3,58 @@
 /*                                                        :::      ::::::::   */
 /*   ft_ls.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cbagdon <cbagdon@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/05 20:41:43 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/03/08 22:55:12 by cbagdon          ###   ########.fr       */
+/*   Created: 2019/03/10 12:37:45 by cbagdon           #+#    #+#             */
+/*   Updated: 2019/03/11 18:55:47 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_ls.h"
 
-/*
-
-void			get_files(char *path)
+t_file			*get_files(char *path)
 {
-	DIR				*dir_pointer;
-	struct dirent	*dir_file;
-	struct stat		file_info;
-	//t_file			*files;
-	//..t_file			*temp;
-
-	if (path[0] == '/' && !path[1])
-		path = ft_strjoin(path, "/");
-	if ((dir_pointer = opendir(path)) == NULL)
-	{
-		ft_printf("Error opening directory!");
-		return ;
-	}
-	while ((dir_file = readdir(dir_pointer)))
-	{
-		path = ft_strjoin(path, dir_file->d_name);
-		stat(path, &file_info);
-		if (S_ISDIR(file_info.st_mode))
-		{
-			if (path[0] != '.')
-				get_files(ft_strjoin(path, dir_file->d_name));
-		}
-		else
-			ft_printf("%s\n", dir_file->d_name);
-		free(path);
-	}
-	closedir(dir_pointer);
-}
-
-*/
-
-void				get_files(char *path)
-{
-	DIR				*directory;
-	t_entries		**list_head;
-	t_entries		*to_add;
+	DIR				*dir_stream;
+	struct dirent	*to_add;
 	t_file			*file;
+	t_file			*head;
+	char			*full_path;
 
-	list_head = NULL;
-	file = NULL;
+	head = NULL;
 	if (!(path[0] == '/' && !path[1]))
 		path = ft_strjoin(path, "/");
-	if (!(directory = opendir(path)))
+	MEM_CHK((dir_stream = opendir(path)));
+	while ((to_add = readdir(dir_stream)))
 	{
-		ft_printf("Error opening directory!\n");
-		return ;
+		full_path = ft_strjoin(path, to_add->d_name);
+		file = new_file(full_path);
+		MEM_CHK((file->f_entry =
+		(struct dirent *)malloc(sizeof(struct dirent))));
+		MEM_CHK((file->f_info =
+		(struct stat *)malloc(sizeof(struct stat))));
+		ft_memcpy(file->f_entry, to_add, sizeof(struct dirent));
+		stat(full_path, file->f_info);
+		add_file(&head, file);
 	}
-	while ((file->entry = readdir(directory)))
-	{
-		path = ft_strjoin(path, file->entry->d_name);
-		stat(path, file->stat_info);
-		to_add = new_list(file);
-		list_add(list_head, to_add);
-	}
-
+	free(path);
+	closedir(dir_stream);
+	return (head);
 }
 
-int		main(int argc, char *argv[])
+int				main(int argc, char *argv[])
 {
+	t_file		*files;
+	t_file		*head;
+
 	(void)argc;
-
-	get_files(argv[1]);
-	return (0);
-}
-
-/*
-int		main(void)
-{
-	struct dirent	*dir_hand;
-	DIR				*dir_stream;
-	t_file			*files;
-	t_file			*temp;
-
-	if ((dir_stream = opendir(".")) == NULL)
-	{
-		ft_printf("Error opening directory!\n");
-		return (1);
-	}
-	files = new_list("\0");
-	while ((dir_hand = readdir(dir_stream)))
-	{
-		if (*(dir_hand->d_name) != '.')
-		{
-			temp = new_list(dir_hand->d_name);
-			list_add(&files, temp);
-		}
-	}
+	files = get_files(argv[1]);
+	files = bubble_list(files);
+	head = files;
 	while (files)
 	{
-		if (ft_strcmp(files->name, "\0") != 0)
-			ft_printf("%s\n", files->name);
+		ft_printf("%s\n", files->f_entry->d_name);
 		files = files->next;
 	}
-	closedir(dir_stream);
+	del_files(&head);
 	return (0);
-}*/
+}
