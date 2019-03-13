@@ -6,7 +6,7 @@
 #    By: cbagdon <cbagdon@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/03/05 15:29:10 by cbagdon           #+#    #+#              #
-#    Updated: 2019/03/05 23:49:54 by cbagdon          ###   ########.fr        #
+#    Updated: 2019/03/13 13:32:19 by cbagdon          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,16 +24,16 @@ OBJECTS = $(patsubst %.c,%.o,$(SRC))
 all: $(NAME)
 
 $(NAME):
-	make -C libft
-	gcc -g $(FLAGS) -c $(addprefix src/,$(SRC)) -I $(INCLUDES)
-	gcc -g $(FLAGS) -o $(NAME) $(OBJECTS) -L ./libft/ -lft
+	@make -C libft
+	@gcc -g $(FLAGS) -c $(addprefix src/,$(SRC)) -I $(INCLUDES)
+	@gcc -g $(FLAGS) -o $(NAME) $(OBJECTS) -L ./libft/ -lft
 
 clean:
-	make -C libft clean
-	rm -rf $(OBJECTS)
+	@make -C libft clean
+	@rm -rf $(OBJECTS)
 
 fclean: clean
-	make -C libft fclean
-	rm -rf $(NAME)
+	@make -C libft fclean
+	@rm -rf $(NAME)
 
 re: fclean all

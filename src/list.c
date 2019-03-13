@@ -6,7 +6,7 @@
 /*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/05 22:49:10 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/03/11 19:11:18 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/03/13 14:37:14 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,10 @@ void			del_files(t_file **head)
 			to_del = *head;
 			*head = (*head)->next;
 			free(to_del->f_entry);
-			free(to_del->path);
 			free(to_del->f_info);
+			free(to_del->path);
+			if (to_del->sub_dir)
+				del_files(&(to_del->sub_dir));
 			free(to_del);
 		}
 		head = NULL;
