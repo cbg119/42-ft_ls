@@ -6,20 +6,20 @@
 /*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/05 22:49:10 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/03/13 14:37:14 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/03/15 15:06:46 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_ls.h"
 
-static t_file			*switch_links(t_file *a, t_file *b)
+t_file		*switch_links(t_file *a, t_file *b)
 {
 	a->next = b->next;
 	b->next = a;
 	return (b);
 }
 
-t_file			*new_file(char *path)
+t_file		*new_file(char *path)
 {
 	t_file		*pointer;
 
@@ -29,7 +29,7 @@ t_file			*new_file(char *path)
 	return (pointer);
 }
 
-void			del_files(t_file **head)
+void		del_files(t_file **head)
 {
 	t_file		*to_del;
 
@@ -56,17 +56,25 @@ void		add_file(t_file **head, t_file *file)
 	*head = file;
 }
 
-t_file 		*bubble_list(t_file *head)
+void		populate_list(t_file *head, t_lsflags *flags)
 {
-	if (!head)
-		return (NULL);
-	if (head->next && ft_strcmp(head->f_entry->d_name, head->next->f_entry->d_name) > 0)
-		head = switch_links(head, head->next);
-	head->next = bubble_list(head->next);
-	if (head->next && ft_strcmp(head->f_entry->d_name, head->next->f_entry->d_name) > 0)
+	t_file	*true_head;
+
+	if (head)
 	{
-		head = switch_links(head, head->next);
-		head->next = bubble_list(head->next);
+		true_head = head;
+		while (true_head)
+		{
+			if (S_ISREG(true_head->f_info->st_mode) ||
+			(S_ISDIR(true_head->f_info->st_mode) && !flags->r_r))
+				true_head->sub_dir = NULL;
+			else if (S_ISDIR(true_head->f_info->st_mode) && flags->r_r)
+			{
+				true_head->sub_dir = get_files(true_head->path);
+				true_head->sub_dir = bubble_list(true_head->sub_dir);
+				populate_list(true_head->sub_dir, flags);
+			}
+			true_head = true_head->next;
+		}
 	}
-	return (head);
 }

@@ -6,7 +6,7 @@
 /*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/10 12:37:45 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/03/13 14:38:52 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/03/15 15:30:59 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,83 +16,71 @@
 */
 
 #include "../includes/ft_ls.h"
-#define MEM(c)	if (!c) return (NULL)
 
-static char		*handle_path(char *path)
+static int		list_count(t_lsflags *flags, int argc)
 {
-	if (!(path[0] == '/' && !path[1]))
-		path = ft_strjoin(path, "/");
-	else
-		path = ft_strdup(path);
-	return (path);
+	return (argc - flags->param_blocks > 2);
 }
 
-t_file			*get_files(char *path)
+static int		is_file(char *path)
 {
-	DIR				*dir_stream;
-	struct dirent	*to_add;
-	t_file			*file;
-	t_file			*head;
-	char			*full_path;
+	DIR		*dir_stream;
 
-	head = NULL;
-	path = handle_path(path);
-	MEM_CHK((dir_stream = opendir(path)));
-	while ((to_add = readdir(dir_stream)))
+	errno = 0;
+	dir_stream = opendir(path);
+	if (dir_stream)
+		closedir(dir_stream);
+	return (errno == ENOTDIR);
+}
+
+void			ft_ls(char *path, t_lsflags *flags, int argc)
+{
+	t_file	*files;
+	t_file	*head;
+
+	files = NULL;
+	if (is_file(path))
 	{
-		if (to_add->d_name[0] == '.')
-			continue ;
-		full_path = ft_strjoin(path, to_add->d_name);
-		file = new_file(full_path);
-		MEM((file->f_entry = (struct dirent *)malloc(sizeof(struct dirent))));
-		MEM((file->f_info = (struct stat *)malloc(sizeof(struct stat))));
-		ft_memcpy(file->f_entry, to_add, sizeof(struct dirent));
-		stat(full_path, file->f_info);
-		add_file(&head, file);
-	}
-	free(path);
-	closedir(dir_stream);
-	return (head);
-}
-
-void			print_files(t_file *head)
-{
-	t_file		*true_head;
-
-	if (!head)
+		handle_file(path);
 		return ;
-	true_head = head;
-	while (true_head)
-	{
-		ft_printf("%s\n", true_head->f_entry->d_name);
-		if (S_ISREG(true_head->f_info->st_mode))
-			true_head->sub_dir = NULL;
-		true_head = true_head->next;
 	}
-	while (head)
-	{
-		if (S_ISDIR(head->f_info->st_mode))
-		{
-			ft_printf("\n%s:\n", head->path);
-			head->sub_dir = get_files(head->path);
-			head->sub_dir = bubble_list(head->sub_dir);
-			print_files(head->sub_dir);
-		}
-		head = head->next;
-	}
+	if (errno == ENOENT)
+		error(path, NON_EXISTANT);
+	files = get_files(path);
+	files = bubble_list(files);
+	populate_list(files, flags);
+	head = files;
+	print_files(files, flags, list_count(flags, argc));
+	del_files(&head);
 }
 
-int				main(int argc,
-char *argv[])
+int				main(int argc, char *argv[])
 {
-	t_file		*files;
-	t_file		*head;
+	int			i;
+	t_lsflags	*flags;
 
 	(void)argc;
-	files = get_files(argv[1]);
-	files = bubble_list(files);
-	head = files;
-	print_files(files);
-	del_files(&head);
+	errno = 0;
+	flags = get_flags(argc, argv);
+	i = flags->param_blocks + 1;
+	if ((argc == 1 && !flags->param_blocks) ||
+	(argc - flags->param_blocks) == 1)
+		ft_ls(".", flags, 0);
+	else
+	{
+		while (i < argc)
+		{
+			ft_ls(argv[i], flags, argc);
+			if (list_count(flags, argc) && i + 1 < argc)
+				ft_putchar('\n');
+			i++;
+		}
+	}
+	ft_printf("a: %d\n", flags->a);
+	ft_printf("l: %d\n", flags->l);
+	ft_printf("r: %d\n", flags->r);
+	ft_printf("t: %d\n", flags->t);
+	ft_printf("R: %d\n", flags->r_r);
+	free(flags);
 	return (0);
 }
