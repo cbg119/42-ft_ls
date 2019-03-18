@@ -6,16 +6,18 @@
 #    By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/03/05 15:29:10 by cbagdon           #+#    #+#              #
-#    Updated: 2019/03/17 17:35:44 by cbagdon          ###   ########.fr        #
+#    Updated: 2019/03/16 17:17:32 by cbagdon          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = ft_ls
 
-SRC = main.c \
-      flags.c \
-	  sort.c \
+SRC = ft_ls.c \
 	  list.c \
+	  dir.c \
+	  file.c \
+	  flags.c \
+	  sort.c \
 	  display.c
 
 INCLUDES = includes/

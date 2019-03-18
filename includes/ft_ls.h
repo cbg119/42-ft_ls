@@ -6,7 +6,7 @@
 /*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/10 12:37:14 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/03/17 17:36:36 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/03/17 21:27:29 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,20 @@
 # include <dirent.h>
 # include <errno.h>
 # include <stdio.h>
+# include <pwd.h>
 
 /*
 **  **********
+*/
+
+/*
+**	MACROS
+*/
+
+# define FILE_COUNT 
+
+/*
+**************
 */
 
 /*
@@ -50,6 +61,7 @@ typedef	struct			s_file
 	char				*path;
 	struct dirent		*f_entry;
 	struct stat			*f_info;
+	struct passwd		*o_uid;
 	struct s_file		*sub_dir;
 	struct s_file		*next;
 }						t_file;
@@ -72,14 +84,25 @@ typedef struct			s_lsflags
 **  PROTOTYPES
 */
 
-void			add_new_file(t_file **head, char *path);
-void			display(t_file *files, t_lsflags *flags);
-void	ft_bubblestrings(char **table, int size, int start);
+void					error(char *illegal_token, int error, int entries);
 
-t_lsflags		*get_lsflags(int argc, char *argv[]);
+void					handle_file(char *path);
 
-t_file			*read_dir(char *path, t_lsflags *flags);
-t_file			*init_file_list(int ac, char **names, int start);
+void					ft_ls(char *path, t_lsflags *flags, int argc);
+
+void					del_files(t_file **head);
+void					add_file(t_file **head, t_file *file);
+void					print_files(t_file *head, t_lsflags *flags);
+void					populate_list(t_file *head, t_lsflags *flags);
+
+t_lsflags				*get_flags(int argc, char *argv[]);
+
+t_file					*switch_links(t_file *a, t_file *b);
+t_file					*new_file(char *path);
+t_file					*get_files(char *path, t_lsflags *flags);
+t_file					*bubble_list(t_file *head);
+
+void					ft_bubblestrings(char **table, int size, int start);
 
 /*
 **  **********

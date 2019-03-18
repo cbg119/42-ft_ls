@@ -6,7 +6,7 @@
 /*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 10:47:33 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/03/16 16:25:49 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/03/17 20:58:43 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static void		set_flags(t_lsflags *flags)
 	flags->param_blocks = 0;
 }
 
-t_lsflags		*get_lsflags(int argc, char *argv[])
+t_lsflags		*get_flags(int argc, char *argv[])
 {
 	int			i;
 	int			j;
@@ -60,10 +60,8 @@ t_lsflags		*get_lsflags(int argc, char *argv[])
 			{
 				if (is_lsflag(argv[i][j]))
 					lsadd_flag(flags, argv[i][j]);
-					/*
 				else
-					error(&argv[i][j], USAGE);
-					*/
+					error(&argv[i][j], USAGE, argc - flags->param_blocks - 1);
 				j++;
 			}
 			i++;
@@ -71,4 +69,39 @@ t_lsflags		*get_lsflags(int argc, char *argv[])
 		}
 	}
 	return (flags);
+}
+
+void			error(char *illegal_token, int error, int entries)
+{
+	if (error == 0)
+		return ;
+	if (error == USAGE)
+	{
+		ft_putstr_fd("ls: illegal option -- ", 2);
+		ft_putstr_fd(illegal_token, 2);
+		ft_putchar_fd('\n', 2);
+		ft_putstr_fd("usage: ls [-Ralrt] [file ...]\n", 2);
+		exit(1);
+	}
+	if (error == ENOENT)
+	{
+		ft_putstr_fd("ls: ", 2);
+		ft_putstr_fd(illegal_token, 2);
+		ft_putstr_fd(": ", 2);
+		perror("");
+	}
+	if (error == EACCES)
+	{
+		if (entries >= 3)
+		{
+			ft_putstr_fd(illegal_token, 2);
+			ft_putstr_fd(":\n", 2);
+		}
+		ft_putstr_fd("ls: ", 2);
+		ft_putstr_fd(illegal_token, 2);
+		ft_putstr_fd(": ", 2);
+		perror("");
+		if (entries >= 3)
+			ft_putchar_fd('\n', 2);
+	}
 }
