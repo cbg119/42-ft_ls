@@ -5,76 +5,50 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/05 22:49:10 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/03/15 15:06:46 by cbagdon          ###   ########.fr       */
+/*   Created: 2019/03/16 17:03:02 by cbagdon           #+#    #+#             */
+/*   Updated: 2019/03/17 17:36:22 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_ls.h"
 
-t_file		*switch_links(t_file *a, t_file *b)
+static t_file	*create_new_file(char *path)
 {
-	a->next = b->next;
-	b->next = a;
-	return (b);
+	t_file		*new;
+
+	MEM_CHK((new = (t_file *)malloc(sizeof(t_file))));
+	MEM_CHK((new->f_info = (struct stat *)malloc(sizeof(struct stat))));
+	new->path = path;
+	stat(new->path, new->f_info);
+	new->next = NULL;
+	return (new);
 }
 
-t_file		*new_file(char *path)
+void			add_new_file(t_file **head, char *path)
 {
-	t_file		*pointer;
+	t_file		*new;
 
-	MEM_CHK((pointer = (t_file *)malloc(sizeof(t_file))));
-	pointer->path = path;
-	pointer->next = NULL;
-	return (pointer);
+	new = create_new_file(path);
+	new->next = *head;
+	*head = new;
 }
 
-void		del_files(t_file **head)
+t_file			*init_file_list(int ac, char **names, int start)
 {
-	t_file		*to_del;
+	int			i;
+	t_file		*head;
 
-	if (head && *head)
+	i = ac - 1;
+	head = NULL;
+	if (ac - 1 == start)
+		add_new_file(&head, ".");
+	else
 	{
-		while (*head)
+		while (i > start)
 		{
-			to_del = *head;
-			*head = (*head)->next;
-			free(to_del->f_entry);
-			free(to_del->f_info);
-			free(to_del->path);
-			if (to_del->sub_dir)
-				del_files(&(to_del->sub_dir));
-			free(to_del);
-		}
-		head = NULL;
-	}
-}
-
-void		add_file(t_file **head, t_file *file)
-{
-	file->next = *head;
-	*head = file;
-}
-
-void		populate_list(t_file *head, t_lsflags *flags)
-{
-	t_file	*true_head;
-
-	if (head)
-	{
-		true_head = head;
-		while (true_head)
-		{
-			if (S_ISREG(true_head->f_info->st_mode) ||
-			(S_ISDIR(true_head->f_info->st_mode) && !flags->r_r))
-				true_head->sub_dir = NULL;
-			else if (S_ISDIR(true_head->f_info->st_mode) && flags->r_r)
-			{
-				true_head->sub_dir = get_files(true_head->path);
-				true_head->sub_dir = bubble_list(true_head->sub_dir);
-				populate_list(true_head->sub_dir, flags);
-			}
-			true_head = true_head->next;
+			add_new_file(&head, names[i]);
+			i--;
 		}
 	}
+	return (head);
 }

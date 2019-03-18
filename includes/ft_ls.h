@@ -6,7 +6,7 @@
 /*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/10 12:37:14 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/03/15 15:08:59 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/03/17 17:36:36 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@
 
 # define USAGE 1
 # define NON_EXISTANT 2
+# define C_CYAN "\x1b[36;1m"
+# define C_RESET  "\x1b[0m"
 
 /*
 **	**********
@@ -70,23 +72,14 @@ typedef struct			s_lsflags
 **  PROTOTYPES
 */
 
-void					error(char *illegal_token, int error);
+void			add_new_file(t_file **head, char *path);
+void			display(t_file *files, t_lsflags *flags);
+void	ft_bubblestrings(char **table, int size, int start);
 
-void					handle_file(char *path);
+t_lsflags		*get_lsflags(int argc, char *argv[]);
 
-void					ft_ls(char *path, t_lsflags *flags, int argc);
-
-void					del_files(t_file **head);
-void					add_file(t_file **head, t_file *file);
-void					print_files(t_file *head, t_lsflags *flags, int file_count);
-void					populate_list(t_file *head, t_lsflags *flags);
-
-t_lsflags				*get_flags(int argc, char *argv[]);
-
-t_file					*switch_links(t_file *a, t_file *b);
-t_file					*new_file(char *path);
-t_file					*get_files(char *path);
-t_file					*bubble_list(t_file *head);
+t_file			*read_dir(char *path, t_lsflags *flags);
+t_file			*init_file_list(int ac, char **names, int start);
 
 /*
 **  **********

@@ -6,7 +6,7 @@
 #    By: cbagdon <cbagdon@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/02/11 16:50:18 by cbagdon           #+#    #+#              #
-#    Updated: 2019/03/05 16:04:24 by cbagdon          ###   ########.fr        #
+#    Updated: 2019/03/15 23:44:10 by cbagdon          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -114,7 +114,7 @@ INCLUDES = includes/
 all:	$(NAME)
 
 $(NAME):
-	gcc -Wall -Wextra -Werror -I includes/libft.h -c $(addprefix srcs/,$(SRCS)) $(addprefix ft_printf/src/,$(PRINTF_SRCS)) $(addprefix ft_printf/conversions/,$(PRINTF_CONVERSIONS)) $(addprefix ft_printf/extras/,$(PRINTF_EXTRAS))
+	gcc -g -Wall -Wextra -Werror -I includes/libft.h -c $(addprefix srcs/,$(SRCS)) $(addprefix ft_printf/src/,$(PRINTF_SRCS)) $(addprefix ft_printf/conversions/,$(PRINTF_CONVERSIONS)) $(addprefix ft_printf/extras/,$(PRINTF_EXTRAS))
 	ar -rcs $(NAME) $(OBJECTS)
 
 clean:
