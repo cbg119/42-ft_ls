@@ -6,7 +6,7 @@
 #    By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/03/05 15:29:10 by cbagdon           #+#    #+#              #
-#    Updated: 2019/03/16 17:17:32 by cbagdon          ###   ########.fr        #
+#    Updated: 2019/03/18 14:52:54 by cbagdon          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,9 @@ SRC = ft_ls.c \
 	  file.c \
 	  flags.c \
 	  sort.c \
-	  display.c
+	  display.c \
+	  print_l.c \
+	  error.c
 
 INCLUDES = includes/
 

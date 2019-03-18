@@ -6,7 +6,7 @@
 /*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/05 22:49:10 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/03/17 22:02:18 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/03/18 14:38:57 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,14 @@ t_file		*new_file(char *path)
 	pointer->path = path;
 	pointer->next = NULL;
 	pointer->sub_dir = NULL;
+	pointer->o_uid = NULL;
 	return (pointer);
 }
 
 void		del_files(t_file **head)
 {
 	t_file		*temp;
+
 	while (*head != NULL)
 	{
 		temp = *head;
@@ -65,7 +67,9 @@ void		populate_list(t_file *head, t_lsflags *flags)
 		{
 			if (S_ISDIR(true_head->f_info->st_mode) && flags->r_r)
 			{
-				if (!(flags->a && flags->r_r && (ft_strequ(".", true_head->f_entry->d_name) || ft_strequ("..", true_head->f_entry->d_name))))
+				if (!(flags->a && flags->r_r &&
+				(ft_strequ(".", true_head->f_entry->d_name) ||
+				ft_strequ("..", true_head->f_entry->d_name))))
 				{
 					true_head->sub_dir = get_files(true_head->path, flags);
 					true_head->sub_dir = bubble_list(true_head->sub_dir);

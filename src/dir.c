@@ -6,7 +6,7 @@
 /*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 10:11:09 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/03/17 22:10:27 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/03/18 13:11:45 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ t_file			*get_files(char *path, t_lsflags *flags)
 		allocate_file(file);
 		ft_memcpy(file->f_entry, to_add, sizeof(struct dirent));
 		attribute_file(file, full_path);
+		file->owner = file->o_uid->pw_name;
 		add_file(&head, file);
 	}
 	free(path);

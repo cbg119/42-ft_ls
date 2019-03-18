@@ -6,7 +6,7 @@
 /*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 10:30:27 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/03/14 15:59:47 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/03/18 14:27:47 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 void	handle_file(char *path)
 {
 	t_file			*head;
-	//t_file			*to_add;
-
 	struct stat		info;
 
 	head = NULL;

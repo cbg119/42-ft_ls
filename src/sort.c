@@ -6,7 +6,7 @@
 /*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/15 14:28:15 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/03/17 14:54:28 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/03/18 14:29:43 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ t_file			*bubble_list(t_file *head)
 	return (head);
 }
 
-void	ft_bubblestrings(char **table, int size, int start)
+void			ft_bubblestrings(char **table, int size, int start)
 {
 	char	*temp;
 	int		i;

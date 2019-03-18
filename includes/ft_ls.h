@@ -6,7 +6,7 @@
 /*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/10 12:37:14 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/03/17 21:27:29 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/03/18 16:24:01 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,9 @@
 # include <dirent.h>
 # include <errno.h>
 # include <stdio.h>
+# include <time.h>
 # include <pwd.h>
+# include <grp.h>
 
 /*
 **  **********
@@ -32,8 +34,6 @@
 /*
 **	MACROS
 */
-
-# define FILE_COUNT 
 
 /*
 **************
@@ -45,6 +45,7 @@
 
 # define USAGE 1
 # define NON_EXISTANT 2
+# define C_RED "\x1b[0;31m"
 # define C_CYAN "\x1b[36;1m"
 # define C_RESET  "\x1b[0m"
 
@@ -64,6 +65,7 @@ typedef	struct			s_file
 	struct passwd		*o_uid;
 	struct s_file		*sub_dir;
 	struct s_file		*next;
+	char				*owner;
 }						t_file;
 
 typedef struct			s_lsflags
@@ -92,6 +94,7 @@ void					ft_ls(char *path, t_lsflags *flags, int argc);
 
 void					del_files(t_file **head);
 void					add_file(t_file **head, t_file *file);
+void					print_l(t_file *file, int *widths);
 void					print_files(t_file *head, t_lsflags *flags);
 void					populate_list(t_file *head, t_lsflags *flags);
 
