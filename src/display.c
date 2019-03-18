@@ -6,7 +6,7 @@
 /*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/15 14:34:27 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/03/17 21:32:26 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/03/17 22:39:58 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void			print_l(t_file *file)
     ft_printf((file->f_info->st_mode & S_IWOTH) ? "w" : "-");
     ft_printf((file->f_info->st_mode & S_IXOTH) ? "x  " : "-  ");
 	ft_printf("%d ", file->f_info->st_nlink);
-	ft_printf("%s ", file->o_uid->pw_name);
+	//ft_printf("%s ", file->o_uid->pw_name);
 }
 
 void			print_files(t_file *head, t_lsflags *flags)
@@ -47,12 +47,15 @@ void			print_files(t_file *head, t_lsflags *flags)
 	while (true_head && flags->r_r)
 	{
 		if (S_ISDIR(true_head->f_info->st_mode))
-		{
-			ft_printf("\n%s:\n", true_head->path);
-			if (flags->l)
-			print_l(true_head);
-			print_files(true_head->sub_dir, flags);
-		}
+			if (!(flags->a && flags->r_r && (ft_strequ(".", true_head->f_entry->d_name) || ft_strequ("..", true_head->f_entry->d_name))))
+			{
+				ft_printf("\n%s:\n", true_head->path);
+				if (flags->l)
+					print_l(true_head);
+				true_head->sub_dir = get_files(true_head->path, flags);
+				true_head->sub_dir = bubble_list(true_head->sub_dir);
+				print_files(true_head->sub_dir, flags);
+			}
 		true_head = true_head->next;
 	}
 	/*

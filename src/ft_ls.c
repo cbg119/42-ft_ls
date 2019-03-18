@@ -6,7 +6,7 @@
 /*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/10 12:37:45 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/03/17 20:59:53 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/03/17 22:36:15 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void			ft_ls(char *path, t_lsflags *flags, int argc)
 		return ;
 	files = get_files(path, flags);
 	files = bubble_list(files);
-	populate_list(files, flags);
+	//populate_list(files, flags);
 	head = files;
 	if (list_count(flags, argc))
 		ft_printf("%s:\n", path);

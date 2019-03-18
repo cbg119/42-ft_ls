@@ -6,7 +6,7 @@
 /*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 10:11:09 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/03/17 21:38:50 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/03/17 22:10:27 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ t_file			*get_files(char *path, t_lsflags *flags)
 	path = handle_path(path);
 	while ((to_add = readdir(dir_stream)))
 	{
-		if (to_add->d_name[0] == '.' && !flags->a)
+		if ((to_add->d_name[0] == '.' && !flags->a))
 			continue ;
 		full_path = ft_strjoin(path, to_add->d_name);
 		file = new_file(full_path);
