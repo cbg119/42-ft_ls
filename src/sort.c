@@ -3,50 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   sort.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
+/*   By: cbagdon <cbagdon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/15 14:28:15 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/03/18 14:29:43 by cbagdon          ###   ########.fr       */
+/*   Created: 2019/03/19 16:39:48 by cbagdon           #+#    #+#             */
+/*   Updated: 2019/03/19 16:47:43 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_ls.h"
 
-t_file			*bubble_list(t_file *head)
+void	isort_arguments(int argc, char *argv[], int start)
 {
-	if (!head)
-		return (NULL);
-	if (head->next &&
-	ft_strcmp(head->f_entry->d_name, head->next->f_entry->d_name) > 0)
-		head = switch_links(head, head->next);
-	head->next = bubble_list(head->next);
-	if (head->next &&
-	ft_strcmp(head->f_entry->d_name, head->next->f_entry->d_name) > 0)
-	{
-		head = switch_links(head, head->next);
-		head->next = bubble_list(head->next);
-	}
-	return (head);
-}
-
-void			ft_bubblestrings(char **table, int size, int start)
-{
-	char	*temp;
 	int		i;
+	int		j;
+	char	*key;
 
-	if (size <= 1)
-		return ;
-	i = start;
-	while (i < size - 1)
+	i = start + 1;
+	while (i < argc)
 	{
-		if (ft_strcmp(table[i], table[i + 1]) > 0)
+		key = argv[i];
+		j = i - 1;
+		while (j >= 0 && (ft_strcmp(argv[j], key) > 0))
 		{
-			temp = table[i];
-			table[i] = table[i + 1];
-			table[i + 1] = temp;
-			i = start;
+			argv[j + 1] = argv[j];
+			j -= 1;
 		}
-		else
-			i++;
+		argv[j + 1] = key;
+		i++;
 	}
 }

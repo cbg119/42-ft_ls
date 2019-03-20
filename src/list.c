@@ -3,80 +3,62 @@
 /*                                                        :::      ::::::::   */
 /*   list.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
+/*   By: cbagdon <cbagdon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/05 22:49:10 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/03/18 14:38:57 by cbagdon          ###   ########.fr       */
+/*   Created: 2019/03/19 17:22:38 by cbagdon           #+#    #+#             */
+/*   Updated: 2019/03/20 00:19:00 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <string.h>
 #include "../includes/ft_ls.h"
 
-t_file		*switch_links(t_file *a, t_file *b)
+t_lslist	*ls_lstnew(void *content, int is_file)
 {
-	a->next = b->next;
-	b->next = a;
-	return (b);
-}
+	t_lslist	*pointer;
 
-t_file		*new_file(char *path)
-{
-	t_file		*pointer;
-
-	MEM_CHK((pointer = (t_file *)malloc(sizeof(t_file))));
-	pointer->path = path;
+	MEM_CHK((pointer = (t_lslist *)malloc(sizeof(t_list))));
+	pointer->data = content;
+	pointer->is_file = is_file;
 	pointer->next = NULL;
-	pointer->sub_dir = NULL;
-	pointer->o_uid = NULL;
 	return (pointer);
 }
 
-void		del_files(t_file **head)
+void		ls_lstadd(t_lslist **head, t_lslist *to_add)
 {
-	t_file		*temp;
-
-	while (*head != NULL)
-	{
-		temp = *head;
-		*head = ((*head)->next);
-		free(temp->path);
-		free(temp->f_entry);
-		free(temp->f_info);
-		if (temp->sub_dir)
-			del_files(&(temp->sub_dir));
-		free(temp);
-	}
-	head = NULL;
+	to_add->next = *head;
+	*head = to_add;
 }
 
-void		add_file(t_file **head, t_file *file)
+void		ls_lstpush(t_lslist **head, t_lslist *to_add)
 {
-	file->next = *head;
-	*head = file;
+	if (*head)
+	{
+		while ((*head)->next)
+			*head = (*head)->next;
+		(*head)->next = to_add;
+	}
+	else
+		*head = to_add;
 }
 
-void		populate_list(t_file *head, t_lsflags *flags)
+t_lslist	*ls_lstjoin(t_lslist **file, t_lslist **dir)
 {
-	t_file	*true_head;
+	t_lslist	*temp;
 
-	if (head)
+	if (!*file && !*dir && !errno)
 	{
-		true_head = head;
-		while (true_head)
-		{
-			if (S_ISDIR(true_head->f_info->st_mode) && flags->r_r)
-			{
-				if (!(flags->a && flags->r_r &&
-				(ft_strequ(".", true_head->f_entry->d_name) ||
-				ft_strequ("..", true_head->f_entry->d_name))))
-				{
-					true_head->sub_dir = get_files(true_head->path, flags);
-					true_head->sub_dir = bubble_list(true_head->sub_dir);
-					populate_list(true_head->sub_dir, flags);
-				}
-			}
-			true_head = true_head->next;
-		}
+		temp = ls_lstnew(".", 0);
+		return (temp);
 	}
+	else if (!*file && !*dir && errno)
+		return (NULL);
+	else if (*file && !*dir)
+		return (*file);
+	else if (*dir && !*file)
+		return (*dir);
+	temp = *file;
+	while ((*file)->next)
+		(*file) = (*file)->next;
+	(*file)->next = *dir;
+	return (temp);
 }

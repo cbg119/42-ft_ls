@@ -3,19 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ft_ls.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
+/*   By: cbagdon <cbagdon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/10 12:37:14 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/03/18 16:24:01 by cbagdon          ###   ########.fr       */
+/*   Created: 2019/03/19 15:29:29 by cbagdon           #+#    #+#             */
+/*   Updated: 2019/03/20 00:24:14 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_LS_H
 # define FT_LS_H
-
-/*
-**  INCLUDES
-*/
 
 # include "../libft/includes/libft.h"
 # include <sys/types.h>
@@ -27,45 +23,27 @@
 # include <pwd.h>
 # include <grp.h>
 
-/*
-**  **********
-*/
 
-/*
-**	MACROS
-*/
-
-/*
-**************
-*/
-
-/*
-**	ERRORS
-*/
-
-# define USAGE 1
-# define NON_EXISTANT 2
 # define C_RED "\x1b[0;31m"
 # define C_CYAN "\x1b[36;1m"
 # define C_RESET  "\x1b[0m"
 
-/*
-**	**********
-*/
+# define IS_FLAG(a) ((ft_strchr("alrtR", a) != NULL) ? 1 : 0)
 
-/*
-**	STRUCTS
-*/
+typedef struct			s_lslist
+{
+	void				*data;
+	int					is_file;
+	struct s_lslist		*next;
+}						t_lslist;
 
 typedef	struct			s_file
 {
 	char				*path;
 	struct dirent		*f_entry;
 	struct stat			*f_info;
-	struct passwd		*o_uid;
 	struct s_file		*sub_dir;
 	struct s_file		*next;
-	char				*owner;
 }						t_file;
 
 typedef struct			s_lsflags
@@ -78,36 +56,18 @@ typedef struct			s_lsflags
 	int		param_blocks;
 }						t_lsflags;
 
-/*
-**	**********
-*/
+void					free_paths(t_lslist *path);
+void					ls_lstpush(t_lslist **head, t_lslist *to_add);
+void					ls_lstadd(t_lslist **head, t_lslist *to_add);
+void					flag_error(char illegal_flag);
+void					open_error_check(char *path, int *errored);
+void					isort_arguments(int argc, char *argv[], int start);
 
-/*
-**  PROTOTYPES
-*/
+t_lslist				*ls_lstnew(void *content, int is_file);
+t_lslist				*ls_lstjoin(t_lslist **file, t_lslist **dir);
 
-void					error(char *illegal_token, int error, int entries);
+t_lsflags				*get_ls_flags(int argc, char *argv[]);
 
-void					handle_file(char *path);
+t_file					*create_file_list(t_lslist *paths, t_lsflags *flags);
 
-void					ft_ls(char *path, t_lsflags *flags, int argc);
-
-void					del_files(t_file **head);
-void					add_file(t_file **head, t_file *file);
-void					print_l(t_file *file, int *widths);
-void					print_files(t_file *head, t_lsflags *flags);
-void					populate_list(t_file *head, t_lsflags *flags);
-
-t_lsflags				*get_flags(int argc, char *argv[]);
-
-t_file					*switch_links(t_file *a, t_file *b);
-t_file					*new_file(char *path);
-t_file					*get_files(char *path, t_lsflags *flags);
-t_file					*bubble_list(t_file *head);
-
-void					ft_bubblestrings(char **table, int size, int start);
-
-/*
-**  **********
-*/
 #endif

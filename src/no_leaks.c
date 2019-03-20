@@ -1,23 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   file.c                                             :+:      :+:    :+:   */
+/*   no_leaks.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
+/*   By: cbagdon <cbagdon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/14 10:30:27 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/03/18 14:27:47 by cbagdon          ###   ########.fr       */
+/*   Created: 2019/03/20 00:22:35 by cbagdon           #+#    #+#             */
+/*   Updated: 2019/03/20 00:25:44 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_ls.h"
 
-void	handle_file(char *path)
+void	free_paths(t_lslist *path)
 {
-	t_file			*head;
-	struct stat		info;
+	t_lslist	*to_del;
 
-	head = NULL;
-	stat(path, &info);
-	ft_printf("%s\n", path);
+	while (path)
+	{
+		to_del = path;
+		path = path->next;
+		free(to_del);
+	}
 }

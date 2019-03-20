@@ -3,22 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   flags.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
+/*   By: cbagdon <cbagdon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/14 10:47:33 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/03/18 14:52:27 by cbagdon          ###   ########.fr       */
+/*   Created: 2019/03/19 15:46:19 by cbagdon           #+#    #+#             */
+/*   Updated: 2019/03/19 16:34:44 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_ls.h"
 
-static int		is_lsflag(char flag)
+static void		zero_flags(t_lsflags *flags)
 {
-	return (flag == 'a' || flag == 'l' || flag == 'r' || flag == 't' ||
-	flag == 'R');
+	flags->a = 0;
+	flags->l = 0;
+	flags->r = 0;
+	flags->t = 0;
+	flags->r_r = 0;
+	flags->param_blocks = 0;
 }
 
-static void		lsadd_flag(t_lsflags *flags, char flag)
+static void		add_ls_flag(t_lsflags *flags, char flag)
 {
 	if (flag == 'a')
 		flags->a = 1;
@@ -32,39 +36,29 @@ static void		lsadd_flag(t_lsflags *flags, char flag)
 		flags->r_r = 1;
 }
 
-static void		set_flags(t_lsflags *flags)
+t_lsflags		*get_ls_flags(int argc, char *argv[])
 {
-	flags->a = 0;
-	flags->l = 0;
-	flags->r = 0;
-	flags->t = 0;
-	flags->r_r = 0;
-	flags->param_blocks = 0;
-}
-
-t_lsflags		*get_flags(int argc, char *argv[])
-{
-	int			i;
-	int			j;
+	int			param;
+	int			character;
 	t_lsflags	*flags;
 
-	i = 1;
+	param = 1;
 	MEM_CHK((flags = (t_lsflags *)malloc(sizeof(t_lsflags))));
-	set_flags(flags);
+	zero_flags(flags);
 	if (argc > 1)
 	{
-		while (i < argc && argv[i][0] == '-' && argv[i][1])
+		while (param < argc && argv[param][0] == '-' && argv[param][1])
 		{
-			j = 1;
-			while (argv[i][j])
+			character = 1;
+			while (argv[param][character])
 			{
-				if (is_lsflag(argv[i][j]))
-					lsadd_flag(flags, argv[i][j]);
+				if (IS_FLAG(argv[param][character]))
+					add_ls_flag(flags, argv[param][character]);
 				else
-					error(&argv[i][j], USAGE, argc - flags->param_blocks - 1);
-				j++;
+					flag_error(argv[param][character]);
+				character++;
 			}
-			i++;
+			param++;
 			flags->param_blocks++;
 		}
 	}

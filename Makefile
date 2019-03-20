@@ -3,24 +3,22 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+         #
+#    By: cbagdon <cbagdon@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2019/03/05 15:29:10 by cbagdon           #+#    #+#              #
-#    Updated: 2019/03/18 14:52:54 by cbagdon          ###   ########.fr        #
+#    Created: 2019/03/19 14:27:00 by cbagdon           #+#    #+#              #
+#    Updated: 2019/03/20 00:24:24 by cbagdon          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = ft_ls
 
 SRC = ft_ls.c \
-	  list.c \
-	  dir.c \
-	  file.c \
 	  flags.c \
+	  error.c \
 	  sort.c \
-	  display.c \
-	  print_l.c \
-	  error.c
+	  list.c \
+	  file_list.c \
+	  no_leaks.c
 
 INCLUDES = includes/
 
@@ -31,16 +29,16 @@ OBJECTS = $(patsubst %.c,%.o,$(SRC))
 all: $(NAME)
 
 $(NAME):
-	@make -C libft
+	make -C libft
 	@gcc -g $(FLAGS) -c $(addprefix src/,$(SRC)) -I $(INCLUDES)
-	@gcc -g $(FLAGS) -o $(NAME) $(OBJECTS) -L ./libft/ -lft
+	@gcc -g $(Flags) -o $(NAME) $(OBJECTS) -L ./libft/ -lft
 
 clean:
-	@make -C libft clean
+	make -C libft clean
 	@rm -rf $(OBJECTS)
 
 fclean: clean
-	@make -C libft fclean
+	make -C libft fclean
 	@rm -rf $(NAME)
 
 re: fclean all

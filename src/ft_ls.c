@@ -3,82 +3,59 @@
 /*                                                        :::      ::::::::   */
 /*   ft_ls.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
+/*   By: cbagdon <cbagdon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/10 12:37:45 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/03/18 14:55:05 by cbagdon          ###   ########.fr       */
+/*   Created: 2019/03/19 15:31:00 by cbagdon           #+#    #+#             */
+/*   Updated: 2019/03/20 00:14:02 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/*
-**	TODO
-**	Add flags l, R, a, r, t
-*/
-
 #include "../includes/ft_ls.h"
 
-static int		list_count(t_lsflags *flags, int argc)
+static t_lslist		*create_path_list(int argc, char *argv[], int start)
 {
-	return (argc - flags->param_blocks > 2);
-}
+	t_lslist		*file_head;
+	t_lslist		*dir_head;
+	t_lslist		*path;
+	struct stat		temp;
 
-static int		is_file(char *path)
-{
-	DIR		*dir_stream;
-
-	dir_stream = opendir(path);
-	if (dir_stream)
-		closedir(dir_stream);
-	return (errno == ENOTDIR);
-}
-
-void			ft_ls(char *path, t_lsflags *flags, int argc)
-{
-	t_file	*files;
-	t_file	*head;
-
-	errno = 0;
-	if (is_file(path))
+	file_head = NULL;
+	dir_head = NULL;
+	argc--;
+	while (argc >= start)
 	{
-		handle_file(path);
-		return ;
+		stat(argv[argc], &temp);
+		path = ls_lstnew(argv[argc], (S_ISREG(temp.st_mode)) ? 1 : 0);
+		if (S_ISREG(temp.st_mode))
+			ls_lstadd(&file_head, path);
+		else
+			ls_lstadd(&dir_head, path);
+		argc--;
 	}
-	error(path, errno, argc - flags->param_blocks - 1);
-	if (errno != 0)
-		return ;
-	files = get_files(path, flags);
-	files = bubble_list(files);
-	//populate_list(files, flags);
-	head = files;
-	if (list_count(flags, argc))
-		ft_printf("%s:\n", path);
-	print_files(files, flags);
-	del_files(&head);
+	file_head = ls_lstjoin(&file_head, &dir_head);
+	return (file_head);
 }
 
-int				main(int argc, char *argv[])
+int					main(int argc, char *argv[])
 {
 	int			i;
+	int			errored;
+	t_lslist	*path;
 	t_lsflags	*flags;
+	t_file		*head;
 
-	(void)argc;
-	errno = 0;
-	flags = get_flags(argc, argv);
+	errored = 0;
+	flags = get_ls_flags(argc, argv);
+	isort_arguments(argc, argv, flags->param_blocks + 1);
 	i = flags->param_blocks + 1;
-	if ((argc == 1 && !flags->param_blocks) ||
-	(argc - flags->param_blocks) == 1)
-		ft_ls(".", flags, 0);
-	else
+	while (i < argc)
+		open_error_check(argv[i++], &errored);
+	path = create_path_list(argc, argv, flags->param_blocks + 1 + errored);
+	head = create_file_list(path, flags);
+	while (head)
 	{
-		ft_bubblestrings(argv, argc, 1);
-		while (i < argc)
-		{
-			ft_ls(argv[i], flags, argc);
-			if (i + 1 < argc && errno == 0)
-				ft_putchar('\n');
-			i++;
-		}
+		ft_printf("%s\n", head->path);
+		head = head->next;
 	}
-	free(flags);
 	return (0);
 }
