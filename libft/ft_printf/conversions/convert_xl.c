@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   convert_xl.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cbagdon <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/03 15:12:32 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/03/05 15:56:25 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/03/22 01:24:27 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,9 @@ static char		*make_hex(unsigned long long number)
 {
 	int					size;
 	unsigned long long	temp;
-	int					i;
 	char				*result;
 	char				*hex_string;
 
-	i = 0;
 	size = 1;
 	temp = number;
 	if (!number)

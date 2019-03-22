@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pf_putfloat.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cbagdon <cbagdon@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/05 00:06:02 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/03/19 14:53:39 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/03/22 01:24:05 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	pf_putfloat(long double number, t_opts options)
 	if (num - whole >= 0.5 && options.precision == 0)
 		whole += 1;
 	num -= whole;
-	ft_putnbr(whole);
+	ft_putnbr(negative * whole);
 	if (options.precision <= 15)
 		num += 0.0000000000000001;
 	if (options.precision > 0 || options.flags.pound)

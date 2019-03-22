@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   flags.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cbagdon <cbagdon@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/19 15:46:19 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/03/19 16:34:44 by cbagdon          ###   ########.fr       */
+/*   Created: 2019/03/22 03:04:47 by cbagdon           #+#    #+#             */
+/*   Updated: 2019/03/22 03:20:58 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ t_lsflags		*get_ls_flags(int argc, char *argv[])
 				if (IS_FLAG(argv[param][character]))
 					add_ls_flag(flags, argv[param][character]);
 				else
-					flag_error(argv[param][character]);
+					ls_error(&argv[param][character], FLAG_ERROR);
 				character++;
 			}
 			param++;

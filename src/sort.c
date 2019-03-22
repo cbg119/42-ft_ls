@@ -3,32 +3,37 @@
 /*                                                        :::      ::::::::   */
 /*   sort.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cbagdon <cbagdon@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/19 16:39:48 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/03/19 16:47:43 by cbagdon          ###   ########.fr       */
+/*   Created: 2019/03/22 03:12:06 by cbagdon           #+#    #+#             */
+/*   Updated: 2019/03/22 03:23:17 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_ls.h"
 
-void	isort_arguments(int argc, char *argv[], int start)
+static void		ft_swap(char **a, char **b)
+{
+	char	*temp;
+
+	temp = *a;
+	*a = *b;
+	*b = temp;
+}
+
+void			bsort_args(int argc, char *argv[])
 {
 	int		i;
-	int		j;
-	char	*key;
 
-	i = start + 1;
-	while (i < argc)
+	i = 0;
+	while (i + 1 < argc)
 	{
-		key = argv[i];
-		j = i - 1;
-		while (j >= 0 && (ft_strcmp(argv[j], key) > 0))
+		if (ft_strcmp(argv[i], argv[i + 1]) > 0)
 		{
-			argv[j + 1] = argv[j];
-			j -= 1;
+			ft_swap(&argv[i], &argv[i + 1]);
+			i = 0;
 		}
-		argv[j + 1] = key;
-		i++;
+		else
+			i++;
 	}
 }

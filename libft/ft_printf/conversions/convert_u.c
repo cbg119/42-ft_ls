@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   convert_u.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cbagdon <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 13:42:10 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/03/03 15:09:47 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/03/22 01:22:25 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,9 @@ static void						zero_pad(char *str)
 
 int								convert_u(t_opts options, va_list ap)
 {
-	int					count;
 	unsigned long long	number;
 	char				*result;
 
-	count = 0;
 	number = fetch_number(options.length, ap);
 	result = c_u(number, options);
 	result = ft_pad(result, options.field_width, ft_strlen(result),

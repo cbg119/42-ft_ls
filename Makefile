@@ -3,22 +3,20 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: cbagdon <cbagdon@student.42.fr>            +#+  +:+       +#+         #
+#    By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2019/03/19 14:27:00 by cbagdon           #+#    #+#              #
-#    Updated: 2019/03/20 00:24:24 by cbagdon          ###   ########.fr        #
+#    Created: 2019/03/22 02:37:43 by cbagdon           #+#    #+#              #
+#    Updated: 2019/03/22 03:52:59 by cbagdon          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = ft_ls
 
-SRC = ft_ls.c \
-	  flags.c \
-	  error.c \
-	  sort.c \
-	  list.c \
-	  file_list.c \
-	  no_leaks.c
+SRC = main.c \
+		error.c \
+		flags.c \
+		sort.c \
+		list.c
 
 INCLUDES = includes/
 

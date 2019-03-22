@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   convert_i.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cbagdon <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/26 00:54:55 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/03/05 00:04:37 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/03/22 01:22:02 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,10 +61,7 @@ static int			width_i(char *str, t_opts options,
 							char *to_print, int is_negative)
 {
 	int		len;
-	int		to_apply;
 
-	to_apply = 0;
-	to_apply = options.field_width;
 	*to_print = (options.flags.zero && (options.precision == -1 &&
 								!options.flags.minus)) ? '0' : ' ';
 	len = ft_strlen(str) + ((is_negative || options.flags.space ||
