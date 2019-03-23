@@ -3,25 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   dir.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cbagdon <cbagdon@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/22 17:10:27 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/03/22 18:15:04 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/03/23 01:27:09 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_ls.h"
 
-void		print_file(char *name, struct stat info)
+void		print_file(char *name, struct stat info, t_lsflags *flags)
 {
-	(void)info;
-	/*
+	int widths[4] = {0};
+	if (flags->l)
+		print_l(widths, info);
 	if (S_ISDIR(info.st_mode))
 		ft_printf("%s%s%s\n", C_CYAN, name, C_WHITE);
 	else if (info.st_mode & S_IXUSR)
 		ft_printf("%s%s%s\n", C_RED, name, C_WHITE);
 	else
-	*/
 	ft_printf("%s\n", name);
 }
 
@@ -69,7 +69,7 @@ void		print_dir(char *path, t_lsflags *flags, int multiple)
 		while (head)
 		{
 			lstat(head->full_path, &info);
-			print_file(head->name, info);
+			print_file(head->name, info, flags);
 			head = head->next;
 			if (!head && multiple)
 				ft_printf("\n");
