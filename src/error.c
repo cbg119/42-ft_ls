@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
+/*   By: cbagdon <cbagdon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/22 03:06:17 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/03/22 03:38:09 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/03/22 17:04:31 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,19 @@ static void		flag_error(char flag)
 	exit(1);
 }
 
+static void		access_error(char *path)
+{
+	ft_putstr_fd("ls: ", 2);
+	ft_putstr_fd(path, 2);
+	ft_putstr_fd(": Permission denied\n", 2);
+}
+
 void			ls_error(char *illegal_token, int error)
 {
 	if (error == ENOENT)
 		error_nonexistent(illegal_token);
 	else if (error == FLAG_ERROR)
 		flag_error(*illegal_token);
+	else if (error == EACCES)
+		access_error(illegal_token);
 }

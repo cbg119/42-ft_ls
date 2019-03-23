@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_ls.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
+/*   By: cbagdon <cbagdon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/22 02:35:34 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/03/22 03:46:47 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/03/22 17:27:18 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,12 +77,21 @@ t_lsflags				*get_ls_flags(int argc, char *argv[]);
 */
 
 /*
+**	DIR
+*/
+
+void					print_file(char *name, struct stat info);
+void					print_dir(char *path, t_lsflags *flags, int multiple);
+t_file					*get_dir(char *path, t_lsflags *flags);
+
+/*
 **	LISTS
 */
 
 t_file					*new_file(char *path, char *name);
 void					add_file(t_file **head, t_file *file);
 
+void					sort_list(t_file *head);
 void					bsort_args(int argc, char *argv[]);
 
 #endif
