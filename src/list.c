@@ -6,7 +6,7 @@
 /*   By: cbagdon <cbagdon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/22 03:40:14 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/03/22 17:50:50 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/03/23 15:32:39 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,8 @@ t_file		*new_file(char *path, char *name)
 	t_file		*new;
 
 	MEM_CHK((new = (t_file *)malloc(sizeof(t_file))));
-	new->path = path;
-	new->name = name;
-	/*
+	new->path = ft_strdup(path);
+	new->name = ft_strdup(name);
 	if (path[ft_strlen(path) - 1] != '/')
 	{
 		temp = ft_strjoin(path, "/");
@@ -29,10 +28,6 @@ t_file		*new_file(char *path, char *name)
 	}
 	else
 		new->full_path = (ft_strjoin(path, name));
-	*/
-	temp = ft_strjoin(path, "/");
-	new->full_path = ft_strjoin(temp, name);
-	free(temp);
 	new->next = NULL;
 	return (new);
 }

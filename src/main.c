@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
+/*   By: cbagdon <cbagdon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/22 02:59:03 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/03/23 01:22:13 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/03/23 15:59:33 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,5 +39,6 @@ int		main(int argc, char *argv[])
 	{
 		ft_ls(argv[i], flags, multiple);
 	}
+	free(flags);
 	return (0);
 }
