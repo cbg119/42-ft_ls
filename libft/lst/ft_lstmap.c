@@ -6,7 +6,7 @@
 /*   By: cbagdon <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/13 16:44:57 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/02/13 17:12:43 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/03/24 10:58:52 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ t_list	*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem))
 		lst = lst->next;
 		while (lst)
 		{
-			ft_lstpush(new_list, (*f)(lst));
+			ft_lstpush(&new_list, (*f)(lst));
 			lst = lst->next;
 		}
 		return (new_list);
