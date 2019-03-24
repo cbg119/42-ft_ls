@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+         #
+#    By: cbagdon <cbagdon@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/03/22 02:37:43 by cbagdon           #+#    #+#              #
-#    Updated: 2019/03/23 01:21:40 by cbagdon          ###   ########.fr        #
+#    Updated: 2019/03/23 17:09:02 by cbagdon          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,8 @@ SRC = main.c \
 		sort.c \
 		list.c \
 		dir.c \
-		display.c
+		display.c \
+		sort2.c
 
 INCLUDES = includes/
 

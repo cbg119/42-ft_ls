@@ -6,24 +6,35 @@
 /*   By: cbagdon <cbagdon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/22 17:10:27 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/03/23 16:01:02 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/03/23 17:53:17 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_ls.h"
 
-void			print_file(char *name, struct stat info, t_lsflags *flags)
+void			print_file(char *full_path,
+char *name, struct stat info, t_lsflags *flags)
 {
-	int widths[4] = {2, 3, 10, 10};
+	int widths[4] = {10, 10, 10, 10};
 
 	if (flags->l)
 		print_l(widths, info);
-	if (S_ISDIR(info.st_mode))
-		ft_printf("%s%s%s\n", C_CYAN, name, C_WHITE);
+		/*
+	if (S_ISLNK(info.st_mode))
+		ft_printf("%s%s%s", C_MAGENTA, name, C_WHITE);
+	else if (S_ISDIR(info.st_mode))
+		ft_printf("%s%s%s", C_CYAN, name, C_WHITE);
 	else if (info.st_mode & S_IXUSR)
-		ft_printf("%s%s%s\n", C_RED, name, C_WHITE);
+		ft_printf("%s%s%s", C_RED, name, C_WHITE);
 	else
-		ft_printf("%s\n", name);
+	*/
+	ft_printf("%s", name);
+	if (flags->l && S_ISLNK(info.st_mode))
+	{
+		ft_printf(" -> ");
+		print_l_link(full_path, info);
+	}
+	ft_printf("\n");
 }
 
 t_file			*get_dir(char *path, t_lsflags *flags)
@@ -48,7 +59,7 @@ t_file			*get_dir(char *path, t_lsflags *flags)
 			add_file(&head, temp);
 		}
 	}
-	sort_list(head);
+	sort_list(&head, flags);
 	closedir(stream);
 	return (head);
 }
@@ -62,9 +73,12 @@ static void		recur_and_free(t_file *head, t_lsflags *flags)
 	temp = head;
 	while (temp)
 	{
-		lstat(temp->full_path, &info);
-		if (S_ISDIR(info.st_mode) && flags->r_r)
-			print_dir(temp->full_path, flags, 1);
+		if (!(ft_strequ(".", temp->name) || ft_strequ("..", temp->name)))
+		{
+			lstat(temp->full_path, &info);
+			if (S_ISDIR(info.st_mode) && flags->r_r)
+				print_dir(temp->full_path, flags, 1);
+		}
 		to_del = temp;
 		temp = temp->next;
 		free(to_del->full_path);
@@ -91,7 +105,7 @@ void			print_dir(char *path, t_lsflags *flags, int multiple)
 		while (temp)
 		{
 			lstat(temp->full_path, &info);
-			print_file(temp->name, info, flags);
+			print_file(temp->full_path, temp->name, info, flags);
 			temp = temp->next;
 			if (!temp && multiple)
 				ft_printf("\n");

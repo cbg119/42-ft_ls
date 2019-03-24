@@ -6,7 +6,7 @@
 /*   By: cbagdon <cbagdon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/22 02:35:34 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/03/23 16:00:12 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/03/23 17:49:43 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,8 @@ t_lsflags				*get_ls_flags(int argc, char *argv[]);
 **	DIR
 */
 
-void					print_file(char *name, struct stat info,
-t_lsflags *flags);
+void					print_file(char *full_path,
+char *name, struct stat info, t_lsflags *flags);
 void					print_dir(char *path, t_lsflags *flags, int multiple);
 t_file					*get_dir(char *path, t_lsflags *flags);
 
@@ -90,6 +90,7 @@ t_file					*get_dir(char *path, t_lsflags *flags);
 */
 
 void					print_l(int *widths, struct stat info);
+void					print_l_link(char *path, struct stat info);
 
 /*
 **	LISTS
@@ -98,7 +99,7 @@ void					print_l(int *widths, struct stat info);
 t_file					*new_file(char *path, char *name);
 void					add_file(t_file **head, t_file *file);
 
-void					sort_list(t_file *head);
-void					bsort_args(int argc, char *argv[]);
+void					sort_list(t_file **head, t_lsflags *flags);
+void					bsort_args(int argc, char *argv[], t_lsflags *flags);
 
 #endif
