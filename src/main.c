@@ -6,11 +6,13 @@
 /*   By: cbagdon <cbagdon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/22 02:59:03 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/03/24 11:17:51 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/03/24 19:26:39 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_ls.h"
+
+//TODO: Add "total" field to t-l prints
 
 void	ft_ls(char *path, t_lsflags *flags, int multiple)
 {
@@ -25,7 +27,6 @@ void	ft_ls(char *path, t_lsflags *flags, int multiple)
 		print_dir(path, flags, multiple);
 	else
 		print_file(path, path, info, flags);
-	printf("%ld\n\n", info.st_mtimespec.tv_sec + info.st_mtimespec.tv_nsec);
 }
 
 static t_list	*init_file_list(int argc, char *argv[], t_lsflags *flags)
@@ -77,6 +78,8 @@ int		main(int argc, char *argv[])
 	multiple = argc - (flags->param_blocks + 1) > 1;
 	bsort_args(argc, argv, flags);
 	head = init_file_list(argc, argv, flags);
+	if (flags->t)
+		t_bsort_args(head, flags);
 	temp = head;
 	while (temp)
 	{

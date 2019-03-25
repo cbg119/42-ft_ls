@@ -6,7 +6,7 @@
 /*   By: cbagdon <cbagdon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/22 03:40:14 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/03/23 15:32:39 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/03/24 16:54:52 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,20 @@ t_file		*new_file(char *path, char *name)
 {
 	char		*temp;
 	t_file		*new;
+	struct stat	info;
 
 	MEM_CHK((new = (t_file *)malloc(sizeof(t_file))));
 	new->path = ft_strdup(path);
 	new->name = ft_strdup(name);
-	if (path[ft_strlen(path) - 1] != '/')
+	stat(path, &info);
+	if (!S_ISLNK(info.st_mode) && path[ft_strlen(path) - 1] != '/')
 	{
 		temp = ft_strjoin(path, "/");
 		new->full_path = ft_strjoin(temp, name);
 		free(temp);
 	}
 	else
-		new->full_path = (ft_strjoin(path, name));
+	new->full_path = (ft_strjoin(path, name));
 	new->next = NULL;
 	return (new);
 }

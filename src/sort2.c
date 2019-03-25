@@ -6,11 +6,50 @@
 /*   By: cbagdon <cbagdon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/23 17:00:56 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/03/23 19:59:13 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/03/24 13:07:38 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_ls.h"
+
+static void		set_time(t_file *file_a, t_file *file_b, struct timespec *a,
+struct timespec *b)
+{
+	struct stat		info;
+
+	stat(file_a->full_path, &info);
+	*a = info.st_mtimespec;
+	stat(file_b->full_path, &info);
+	*b = info.st_mtimespec;
+}
+
+static t_file	*t_sort_merge(t_file *a, t_file *b, t_lsflags *flags)
+{
+	struct timespec		time_a;
+	struct timespec	time_b;
+	t_file				*result;
+
+	result = NULL;
+	if (!a)
+		return (b);
+	if (!b)
+		return (a);
+	set_time(a, b, &time_a, &time_b);
+	if ((!flags->r && ((time_a.tv_sec > time_b.tv_sec) ||
+	(time_a.tv_sec == time_b.tv_sec && time_a.tv_nsec < time_b.tv_nsec))) ||
+	(flags->r && ((time_a.tv_sec < time_b.tv_sec) ||
+	(time_a.tv_sec == time_b.tv_sec && time_a.tv_nsec > time_b.tv_nsec))))
+	{
+		result = a;
+		result->next = t_sort_merge(a->next, b, flags);
+	}
+	else
+	{
+		result = b;
+		result->next = t_sort_merge(a, b->next, flags);
+	}
+	return (result);
+}
 
 static t_file	*sort_merge(t_file *a, t_file *b, t_lsflags *flags)
 {
@@ -21,12 +60,8 @@ static t_file	*sort_merge(t_file *a, t_file *b, t_lsflags *flags)
 		return (b);
 	if (!b)
 		return (a);
-	if (!flags->r && ft_strcmp(a->name, b->name) <= 0)
-	{
-		result = a;
-		result->next = sort_merge(a->next, b, flags);
-	}
-	else if (flags->r && ft_strcmp(a->name, b->name) >= 0)
+	if ((!flags->r && ft_strcmp(a->name, b->name) <= 0) ||
+	(flags->r && ft_strcmp(a->name, b->name) >= 0))
 	{
 		result = a;
 		result->next = sort_merge(a->next, b, flags);
@@ -72,5 +107,8 @@ void			sort_list(t_file **head, t_lsflags *flags)
 	merge_split(head_curr, &a, &b);
 	sort_list(&a, flags);
 	sort_list(&b, flags);
-	*head = sort_merge(a, b, flags);
+	if (!flags->t)
+		*head = sort_merge(a, b, flags);
+	else
+		*head = t_sort_merge(a, b, flags);
 }

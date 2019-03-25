@@ -6,7 +6,7 @@
 /*   By: cbagdon <cbagdon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/22 02:35:34 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/03/23 17:49:43 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/03/24 11:40:32 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,5 +101,6 @@ void					add_file(t_file **head, t_file *file);
 
 void					sort_list(t_file **head, t_lsflags *flags);
 void					bsort_args(int argc, char *argv[], t_lsflags *flags);
+void					t_bsort_args(t_list *head, t_lsflags *flags);
 
 #endif

@@ -6,11 +6,28 @@
 /*   By: cbagdon <cbagdon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/22 17:10:27 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/03/23 17:53:17 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/03/24 19:29:11 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_ls.h"
+
+static int		get_blocks(t_file *head)
+{
+	struct stat	info;
+	int			result;
+	t_file		*curr;
+
+	result = 0;
+	curr = head;
+	while (curr)
+	{
+		lstat(curr->full_path, &info);
+		result += info.st_blocks;
+		curr = curr->next;
+	}
+	return (result);
+}
 
 void			print_file(char *full_path,
 char *name, struct stat info, t_lsflags *flags)
@@ -19,16 +36,14 @@ char *name, struct stat info, t_lsflags *flags)
 
 	if (flags->l)
 		print_l(widths, info);
-		/*
-	if (S_ISLNK(info.st_mode))
-		ft_printf("%s%s%s", C_MAGENTA, name, C_WHITE);
-	else if (S_ISDIR(info.st_mode))
+	if (S_ISDIR(info.st_mode))
 		ft_printf("%s%s%s", C_CYAN, name, C_WHITE);
+	else if (S_ISLNK(info.st_mode))
+		ft_printf("%s%s%s", C_MAGENTA, name, C_WHITE);
 	else if (info.st_mode & S_IXUSR)
 		ft_printf("%s%s%s", C_RED, name, C_WHITE);
 	else
-	*/
-	ft_printf("%s", name);
+		ft_printf("%s", name);
 	if (flags->l && S_ISLNK(info.st_mode))
 	{
 		ft_printf(" -> ");
@@ -96,7 +111,10 @@ void			print_dir(char *path, t_lsflags *flags, int multiple)
 
 	if (multiple)
 		ft_printf("%s:\n", path);
+	stat(path, &info);
 	head = get_dir(path, flags);
+	if (flags->l)
+		ft_printf("total %d\n", get_blocks(head));
 	temp = head;
 	if (!head && errno == 0)
 		ft_printf("\n");
