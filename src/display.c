@@ -6,7 +6,7 @@
 /*   By: cbagdon <cbagdon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/23 01:13:46 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/03/24 19:18:59 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/03/25 01:37:16 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,11 +74,11 @@ void			print_l(int *widths, struct stat info)
 
 void			print_l_link(char *path, struct stat info)
 {
+	(void)info;
 	char	*link;
 
-	link = ft_strnew(info.st_size);
-	readlink(path, link, info.st_size);
-	link[info.st_size] = '\0';
+	link = ft_strnew(PATH_MAX);
+	readlink(path, link, PATH_MAX);
 	ft_printf(link);
 	free(link);
 }

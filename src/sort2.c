@@ -6,7 +6,7 @@
 /*   By: cbagdon <cbagdon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/23 17:00:56 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/03/24 13:07:38 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/03/25 01:44:06 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,16 @@ struct timespec *b)
 {
 	struct stat		info;
 
-	stat(file_a->full_path, &info);
+	lstat(file_a->full_path, &info);
 	*a = info.st_mtimespec;
-	stat(file_b->full_path, &info);
+	lstat(file_b->full_path, &info);
 	*b = info.st_mtimespec;
 }
 
 static t_file	*t_sort_merge(t_file *a, t_file *b, t_lsflags *flags)
 {
 	struct timespec		time_a;
-	struct timespec	time_b;
+	struct timespec		time_b;
 	t_file				*result;
 
 	result = NULL;
@@ -36,9 +36,9 @@ static t_file	*t_sort_merge(t_file *a, t_file *b, t_lsflags *flags)
 		return (a);
 	set_time(a, b, &time_a, &time_b);
 	if ((!flags->r && ((time_a.tv_sec > time_b.tv_sec) ||
-	(time_a.tv_sec == time_b.tv_sec && time_a.tv_nsec < time_b.tv_nsec))) ||
+	(time_a.tv_sec == time_b.tv_sec && time_a.tv_nsec > time_b.tv_nsec))) ||
 	(flags->r && ((time_a.tv_sec < time_b.tv_sec) ||
-	(time_a.tv_sec == time_b.tv_sec && time_a.tv_nsec > time_b.tv_nsec))))
+	(time_a.tv_sec == time_b.tv_sec && time_a.tv_nsec < time_b.tv_nsec))))
 	{
 		result = a;
 		result->next = t_sort_merge(a->next, b, flags);

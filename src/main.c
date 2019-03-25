@@ -6,21 +6,20 @@
 /*   By: cbagdon <cbagdon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/22 02:59:03 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/03/24 19:26:39 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/03/25 01:33:22 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_ls.h"
 
-//TODO: Add "total" field to t-l prints
-
-void	ft_ls(char *path, t_lsflags *flags, int multiple)
+void			ft_ls(char *path, t_lsflags *flags, int multiple)
 {
 	struct stat		info;
 
 	if (lstat(path, &info) == -1)
 	{
-		ls_error(path, ENOENT);
+		ls_error(path, errno);
+		errno = 0;
 		return ;
 	}
 	if (S_ISDIR(info.st_mode))
@@ -46,7 +45,10 @@ static t_list	*init_file_list(int argc, char *argv[], t_lsflags *flags)
 			ft_lstpush(&head, to_add);
 		}
 		else
-			ls_error(argv[i], ENOENT);
+		{
+			ls_error(argv[i], errno);
+			errno = 0;
+		}
 		i++;
 	}
 	return (head);
@@ -67,7 +69,7 @@ static void		del_file_list(t_list **head)
 	}
 }
 
-int		main(int argc, char *argv[])
+int				main(int argc, char *argv[])
 {
 	int			multiple;
 	t_lsflags	*flags;
@@ -76,17 +78,22 @@ int		main(int argc, char *argv[])
 
 	flags = get_ls_flags(argc, argv);
 	multiple = argc - (flags->param_blocks + 1) > 1;
-	bsort_args(argc, argv, flags);
-	head = init_file_list(argc, argv, flags);
-	if (flags->t)
-		t_bsort_args(head, flags);
-	temp = head;
-	while (temp)
+	if (argc - (flags->param_blocks + 1) != 0)
 	{
-		ft_ls(temp->content, flags, multiple);
-		temp = temp->next;
+		bsort_args(argc, argv, flags);
+		head = init_file_list(argc, argv, flags);
+		if (flags->t)
+			t_bsort_args(head, flags);
+		temp = head;
+		while (temp)
+		{
+			ft_ls(temp->content, flags, multiple);
+			temp = temp->next;
+		}
+		del_file_list(&head);
 	}
-	del_file_list(&head);
+	else
+		ft_ls(".", flags, 0);
 	free(flags);
 	return (0);
 }

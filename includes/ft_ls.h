@@ -6,7 +6,7 @@
 /*   By: cbagdon <cbagdon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/22 02:35:34 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/03/24 11:40:32 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/03/25 01:36:19 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 # include <pwd.h>
 # include <grp.h>
 
+#include <limits.h>
 /*
 **	MACROS
 */

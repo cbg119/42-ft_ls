@@ -6,7 +6,7 @@
 /*   By: cbagdon <cbagdon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/22 03:40:14 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/03/24 16:54:52 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/03/25 00:47:51 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ t_file		*new_file(char *path, char *name)
 		free(temp);
 	}
 	else
-	new->full_path = (ft_strjoin(path, name));
+		new->full_path = (ft_strjoin(path, name));
 	new->next = NULL;
 	return (new);
 }

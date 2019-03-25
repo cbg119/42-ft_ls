@@ -6,7 +6,7 @@
 /*   By: cbagdon <cbagdon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/22 17:10:27 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/03/24 19:29:11 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/03/25 01:12:49 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,8 @@ static void		recur_and_free(t_file *head, t_lsflags *flags)
 	{
 		if (!(ft_strequ(".", temp->name) || ft_strequ("..", temp->name)))
 		{
-			lstat(temp->full_path, &info);
-			if (S_ISDIR(info.st_mode) && flags->r_r)
+			stat(temp->full_path, &info);
+			if ((S_ISDIR(info.st_mode) || S_ISLNK(info.st_mode)) && flags->r_r)
 				print_dir(temp->full_path, flags, 1);
 		}
 		to_del = temp;

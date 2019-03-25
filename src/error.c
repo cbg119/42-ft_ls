@@ -6,7 +6,7 @@
 /*   By: cbagdon <cbagdon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/22 03:06:17 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/03/23 17:47:33 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/03/25 01:08:54 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,14 @@ static void		access_error(char *path)
 	ft_putstr_fd(": Permission denied\n", 2);
 }
 
+static void		file_descriptor_error(char *path, int error)
+{
+	ft_putstr_fd("ls: ", 2);
+	ft_putstr_fd(path, 2);
+	if (error == EBADF)
+		ft_putstr_fd(": Bad file descriptor\n", 2);
+}
+
 void			ls_error(char *illegal_token, int error)
 {
 	if (error == ENOENT)
@@ -43,4 +51,6 @@ void			ls_error(char *illegal_token, int error)
 		flag_error(*illegal_token);
 	else if (error == EACCES)
 		access_error(illegal_token);
+	else if (error == EBADF)
+		file_descriptor_error(illegal_token, error);
 }
