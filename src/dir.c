@@ -6,7 +6,7 @@
 /*   By: cbagdon <cbagdon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/22 17:10:27 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/03/25 01:12:49 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/03/25 16:43:40 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,8 @@ static int		get_blocks(t_file *head)
 void			print_file(char *full_path,
 char *name, struct stat info, t_lsflags *flags)
 {
-	int widths[4] = {10, 10, 10, 10};
-
 	if (flags->l)
-		print_l(widths, info);
+		print_l(info, full_path, flags);
 	if (S_ISDIR(info.st_mode))
 		ft_printf("%s%s%s", C_CYAN, name, C_WHITE);
 	else if (S_ISLNK(info.st_mode))
@@ -47,7 +45,7 @@ char *name, struct stat info, t_lsflags *flags)
 	if (flags->l && S_ISLNK(info.st_mode))
 	{
 		ft_printf(" -> ");
-		print_l_link(full_path, info);
+		print_l_link(full_path);
 	}
 	ft_printf("\n");
 }
@@ -74,7 +72,8 @@ t_file			*get_dir(char *path, t_lsflags *flags)
 			add_file(&head, temp);
 		}
 	}
-	sort_list(&head, flags);
+	if (!flags->f)
+		sort_list(&head, flags);
 	closedir(stream);
 	return (head);
 }
@@ -111,7 +110,6 @@ void			print_dir(char *path, t_lsflags *flags, int multiple)
 
 	if (multiple)
 		ft_printf("%s:\n", path);
-	stat(path, &info);
 	head = get_dir(path, flags);
 	if (flags->l)
 		ft_printf("total %d\n", get_blocks(head));

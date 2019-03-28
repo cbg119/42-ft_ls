@@ -6,7 +6,7 @@
 /*   By: cbagdon <cbagdon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/22 02:59:03 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/03/25 01:33:22 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/03/25 16:56:25 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void			ft_ls(char *path, t_lsflags *flags, int multiple)
 		errno = 0;
 		return ;
 	}
-	if (S_ISDIR(info.st_mode))
+	if (S_ISDIR(info.st_mode) && !flags->d)
 		print_dir(path, flags, multiple);
 	else
 		print_file(path, path, info, flags);
@@ -82,7 +82,7 @@ int				main(int argc, char *argv[])
 	{
 		bsort_args(argc, argv, flags);
 		head = init_file_list(argc, argv, flags);
-		if (flags->t)
+		if (flags->t && !flags->f)
 			t_bsort_args(head, flags);
 		temp = head;
 		while (temp)

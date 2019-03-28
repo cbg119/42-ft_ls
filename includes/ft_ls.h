@@ -6,7 +6,7 @@
 /*   By: cbagdon <cbagdon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/22 02:35:34 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/03/25 01:36:19 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/03/25 16:56:43 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 */
 
 # include "../libft/includes/libft.h"
+# include <sys/xattr.h>
 # include <sys/types.h>
 # include <sys/stat.h>
 # include <dirent.h>
@@ -26,14 +27,14 @@
 # include <time.h>
 # include <pwd.h>
 # include <grp.h>
+# include <limits.h>
 
-#include <limits.h>
 /*
 **	MACROS
 */
 
 # define FLAG_ERROR 1
-# define IS_FLAG(a) ((ft_strchr("alrtR", a) != NULL) ? 1 : 0)
+# define IS_FLAG(a) ((ft_strchr("alrtRfgd", a) != NULL) ? 1 : 0)
 
 /*
 **	STRUCTS
@@ -53,6 +54,10 @@ typedef struct			s_lsflags
 	int					l;
 	int					r;
 	int					t;
+	int					u;
+	int					f;
+	int					g;
+	int					d;
 	int					r_r;
 	int					param_blocks;
 }						t_lsflags;
@@ -90,8 +95,9 @@ t_file					*get_dir(char *path, t_lsflags *flags);
 **	DISPLAY
 */
 
-void					print_l(int *widths, struct stat info);
-void					print_l_link(char *path, struct stat info);
+void					print_l(struct stat info, char *path, t_lsflags *flags);
+void					print_l_link(char *path);
+void					get_widths(int *widths, t_file *head);
 
 /*
 **	LISTS

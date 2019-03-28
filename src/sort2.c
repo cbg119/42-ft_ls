@@ -6,7 +6,7 @@
 /*   By: cbagdon <cbagdon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/23 17:00:56 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/03/25 01:44:06 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/03/25 16:40:21 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,8 +107,8 @@ void			sort_list(t_file **head, t_lsflags *flags)
 	merge_split(head_curr, &a, &b);
 	sort_list(&a, flags);
 	sort_list(&b, flags);
-	if (!flags->t)
+	if (!flags->t && !flags->f)
 		*head = sort_merge(a, b, flags);
-	else
+	else if (!flags->f)
 		*head = t_sort_merge(a, b, flags);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   flags.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
+/*   By: cbagdon <cbagdon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/22 03:04:47 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/03/22 03:20:58 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/03/25 16:56:23 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,9 @@ static void		zero_flags(t_lsflags *flags)
 	flags->r = 0;
 	flags->t = 0;
 	flags->r_r = 0;
+	flags->f = 0;
+	flags->g = 0;
+	flags->d = 0;
 	flags->param_blocks = 0;
 }
 
@@ -34,6 +37,15 @@ static void		add_ls_flag(t_lsflags *flags, char flag)
 		flags->t = 1;
 	else if (flag == 'R')
 		flags->r_r = 1;
+	else if (flag == 'f')
+	{
+		flags->a = 1;
+		flags->f = 1;
+	}
+	else if (flag == 'g')
+		flags->g = 1;
+	else if (flag == 'd')
+		flags->d = 1;
 }
 
 t_lsflags		*get_ls_flags(int argc, char *argv[])
